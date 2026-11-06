@@ -8,8 +8,12 @@ One Gemini generateContent client that targets AI Studio or Vertex AI from confi
 
 ## Problem
 
-Describe in two or three sentences the concrete problem this utility solves, who hits it, and what
-they do today without it. Replace this paragraph when the first real feature lands.
+Gemini is reachable through AI Studio with an API key and through Vertex AI with a project,
+location and OAuth token, and the endpoints, headers and environment variables differ. Code written
+for one backend breaks on the other, URL parts built from config can be abused, and tests hit the
+network. This library resolves the backend with the same environment rules as the official
+google-genai SDK, builds validated requests and keeps transport and tokens behind injectable
+callables.
 
 ## Install
 
@@ -24,16 +28,25 @@ Requires Python 3.10 or newer. No runtime dependencies.
 ## Usage
 
 ```python
-import gemini_vertex_switch
+from gemini_vertex_switch import GeminiClient, GeminiError, resolve_config
 
-# normalize() trims surrounding whitespace and lower-cases the text.
-print(gemini_vertex_switch.normalize("  Hello World "))  # -> "hello world"
+config = resolve_config(
+    "gemini-2.5-flash",
+    env={"GOOGLE_GENAI_USE_VERTEXAI": "true", "GOOGLE_CLOUD_PROJECT": "my-proj-123"},
+)
+client = GeminiClient(config, token_provider=lambda: "oauth-token")
 
-# Blank input is rejected explicitly instead of returning an empty string.
 try:
-    gemini_vertex_switch.normalize("   ")
-except ValueError as exc:
-    print(f"rejected: {exc}")
+    text = client.complete(
+        [
+            {"role": "system", "content": "Be brief."},
+            {"role": "user", "content": "Say hi."},
+        ],
+        max_tokens=64,
+    )
+    print(text)
+except GeminiError as exc:
+    print(f"failed: {exc.code}")
 ```
 
 ## Documentation

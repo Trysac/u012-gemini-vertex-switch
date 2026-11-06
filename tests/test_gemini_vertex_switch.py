@@ -15,12 +15,12 @@ from gemini_vertex_switch import (
 from gemini_vertex_switch.transport import UrllibTransport
 
 KEY = "sentinel-key-value"
-TOKEN = "sentinel-token-value"
+TOKEN = "sentinel-token-value"  # noqa: S105
 MODEL = "gemini-2.5-flash"
 AI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
-VERTEX_URL = "https://us-central1-aiplatform.googleapis.com/v1/projects/my-proj-123/locations/us-central1/publishers/google/models/gemini-2.5-flash:generateContent"  # noqa: E501
-GLOBAL_URL = "https://aiplatform.googleapis.com/v1/projects/my-proj-123/locations/global/publishers/google/models/gemini-2.5-flash:generateContent"  # noqa: E501
-US_URL = "https://aiplatform.us.rep.googleapis.com/v1/projects/my-proj-123/locations/us/publishers/google/models/gemini-2.5-flash:generateContent"  # noqa: E501
+VERTEX_URL = "https://us-central1-aiplatform.googleapis.com/v1/projects/my-proj-123/locations/us-central1/publishers/google/models/gemini-2.5-flash:generateContent"
+GLOBAL_URL = "https://aiplatform.googleapis.com/v1/projects/my-proj-123/locations/global/publishers/google/models/gemini-2.5-flash:generateContent"
+US_URL = "https://aiplatform.us.rep.googleapis.com/v1/projects/my-proj-123/locations/us/publishers/google/models/gemini-2.5-flash:generateContent"
 
 USER_HI = [{"role": "user", "content": "hi"}]
 
@@ -259,7 +259,8 @@ def test_invalid_model_rejected_before_any_transport_call(model):
     assert via_resolve.value.code == "config"
     transport = FakeTransport()
     with pytest.raises(GeminiError) as via_client:
-        GeminiClient(GeminiConfig("ai_studio", model, None, None, "v1beta", KEY), transport=transport)
+        config = GeminiConfig("ai_studio", model, None, None, "v1beta", KEY)
+        GeminiClient(config, transport=transport)
     assert via_client.value.code == "config"
     assert transport.calls == []
 
@@ -271,7 +272,9 @@ def test_non_string_model_is_rejected():
     assert info.value.code == "config"
 
 
-@pytest.mark.parametrize("project", ["Bad_Project", "short", "my-proj-123\n", "1-starts-digit", "p" * 40])
+@pytest.mark.parametrize(
+    "project", ["Bad_Project", "short", "my-proj-123\n", "1-starts-digit", "p" * 40]
+)
 def test_invalid_project_is_rejected(project):
     with pytest.raises(GeminiError) as info:
         resolve_config(MODEL, env={"GOOGLE_CLOUD_PROJECT": project}, backend="vertex")

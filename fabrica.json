@@ -1,0 +1,1 @@
+{"lang": "python", "package": "trysac-gemini-vertex-switch", "commands": {"install": [["uv", "sync"]], "check": [["uv", "run", "python", "scripts/check.py"]]}}

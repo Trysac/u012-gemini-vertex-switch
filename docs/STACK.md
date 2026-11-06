@@ -13,6 +13,8 @@
 | gitleaks | Secret scanning locally and in CI. |
 | GitHub Actions + Dependabot | Thin CI wrapper over the local gates; weekly dependency updates. |
 
+Runtime dependencies: none. The library does not import google-genai or google-auth.
+
 ## Discarded
 
 | Tool | Why not |

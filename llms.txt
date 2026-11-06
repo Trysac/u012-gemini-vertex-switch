@@ -1,16 +1,15 @@
 # gemini-vertex-switch
 
-> One Gemini generateContent client that targets AI Studio or Vertex AI from config or google-genai environment variables, with validated URL parts and injectable transport Python package `trysac-gemini-vertex-switch`, import name `gemini_vertex_switch`, MIT licensed,
-> Python >= 3.10, no runtime dependencies.
+> Zero-dependency Python client for Gemini generateContent that switches between AI Studio and Vertex AI using google-genai environment rules. Python package `trysac-gemini-vertex-switch`, import name `gemini_vertex_switch`, MIT licensed, Python >= 3.10, no runtime dependencies.
 
 ## Docs
 
-- [README](README.md): problem, install, usage example
-- [AGENTS](AGENTS.md): commands, folder map, conventions, limits
+- [README](README.md): problem, install, usage example, public API
 - [Architecture](docs/ARCHITECTURE.md): shape of the package and its public API
+- [Security](docs/SECURITY.md): threat model, secret handling, URL validation, limits
 - [Testing](docs/TESTING.md): how to run and extend the tests
 
 ## Optional
 
+- [Project record](docs/PROJECT.md): objective, scope and effort metrics
 - [Stack](docs/STACK.md): tools used and discarded
-- [Changelog](CHANGELOG.md): release history

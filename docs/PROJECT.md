@@ -2,12 +2,12 @@
 
 ## Objective
 
-One Gemini generateContent client that targets AI Studio or Vertex AI from config or google-genai environment variables, with validated URL parts and injectable transport
+Provide one zero-dependency Gemini generateContent client that switches between AI Studio and Vertex AI using google-genai environment rules, validates URL parts before any request, and keeps transport and tokens injectable so tests never touch the network.
 
 ## Scope
 
-- In scope: the public API documented in [README.md](../README.md), typed and tested.
-- Out of scope: anything that needs runtime dependencies or I/O without an accepted ADR.
+- In scope: backend resolution from config or environment, request encoding for `complete` and `generate`, response parsing with typed errors, injectable `Transport` and `token_provider`, and the `LLMPort` with deterministic test doubles.
+- Out of scope: streaming, tools, files, embeddings, Vertex express-mode keys and OAuth flows. A caller may plug google-auth into `token_provider`.
 
 ## Timeline
 
